@@ -1,9 +1,21 @@
 <div class="pw-sapper">
-  <div class="pw-sapper-header">Sapper</div>
+  <div class="pw-sapper-header">
+    <h1>Sapper</h1>
+    <div class="pw-sapper-settings">
+      <span (click)="toggle()" class="scheme-button">
+        size: {{currentScheme.rows}} x {{currentScheme.columns}}, mines: {{currentScheme.mines}}
+      </span>
+      <ul class="select" [ngClass]="{on: selectOpen}">
+        <li *ngFor="let item of scheme">
+          <span (click)="setScheme(item)">size: {{item.rows}} x {{item.columns}}, mines: {{item.mines}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
   <div class="pw-sapper-content">
     <ul>
       <li *ngFor="let row of fieldList">
-        <button type="button" *ngFor="let item of row">+</button>
+        <button type="button" *ngFor="let item of row" [ngClass]="{mine: item.mine}"></button>
       </li>
     </ul>
   </div>
