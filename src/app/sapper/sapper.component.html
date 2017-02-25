@@ -15,10 +15,10 @@
   <div class="pw-sapper-content">
     <ul>
       <li *ngFor="let row of fieldList">
-        <button [ngClass]="{'glyphicon-asterisk': item.mine_, 'glyphicon-flag': item.flag == 1, question: item.flag == 2, open: item.open}"
+        <button [ngClass]="{'glyphicon-asterisk': gameOver == 'error' && item.mine && item.flag != 1, 'glyphicon-flag': item.flag == 1, question: item.flag == 2, open: item.open}"
                 type="button" *ngFor="let item of row" class="glyphicon" (contextmenu)="onRightClick($event, item)"
                 (click)="click($event, item)">
-          <span *ngIf="item.open && item.neighbors">{{item.neighbors}}</span>
+          <span *ngIf="item.open && item.neighbors && !item.mine">{{item.neighbors}}</span>
         </button>
       </li>
     </ul>
@@ -27,5 +27,5 @@
       <span [ngClass]="{on: gameOver == 'error'}">you lost</span>
     </div>
   </div>
-  <div class="pw-sapper-footer"></div>
+  <div class="pw-sapper-footer text-center">to open {{closed}}</div>
 </div>

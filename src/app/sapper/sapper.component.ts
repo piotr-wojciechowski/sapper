@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sapper.component.scss']
 })
 export class SapperComponent implements OnInit {
-  fieldList = [];
   scheme = [
     {rows: 9, columns: 9, mines: 10},
     {rows: 16, columns: 16, mines: 40},
@@ -14,22 +13,24 @@ export class SapperComponent implements OnInit {
   ];
   currentScheme = this.scheme[0];
   selectOpen = false;
+  fieldList = [];
   gameOver = '';
+  closed: number;
 
   constructor() {
-    this.generateFieldList();
     console.log('sapper', this);
   }
 
   ngOnInit() {
+    this.generateFieldList();
   }
 
   generateFieldList () {
-    let mines = 0,
-      sields = this.currentScheme.rows * this.currentScheme.columns;
+    let mines = 0;
 
     this.gameOver = '';
     this.fieldList = [];
+    this.closed = this.currentScheme.rows * this.currentScheme.columns - this.currentScheme.mines;
 
     for (let x = 0; x < this.currentScheme.rows; x++) {
       let row = [];
@@ -41,7 +42,7 @@ export class SapperComponent implements OnInit {
     }
 
     do {
-      var r = Math.round(Math.random() * this.currentScheme.rows - .5),
+      let r = Math.round(Math.random() * this.currentScheme.rows - .5),
         c = Math.round(Math.random() * this.currentScheme.columns - .5),
         field = this.fieldList[r][c];
 
@@ -56,6 +57,56 @@ export class SapperComponent implements OnInit {
         mines++;
       }
     } while (mines !== this.currentScheme.mines)
+  }
+
+  setGameOver (error) {
+    this.gameOver = error ? 'error': 'succes';
+  }
+
+  openNeighbors (item) {
+    let listNeighbors = this.neighbors(item);
+
+    for (let i in listNeighbors) {
+      let $this = listNeighbors[i];
+
+      if (!$this.open) {
+        this.open($this);
+        if (!$this.neighbors) {
+          setTimeout( () => {
+            this.openNeighbors($this);
+          }, 70);
+        }
+      }
+    }
+  }
+
+  open (item) {
+    item.open = true;
+    this.closed--;
+    if (!this.closed) {
+      this.setGameOver(false);
+    }
+  }
+
+  neighbors (item) {
+    let r = item.row,
+      c = item.col,
+      list = [];
+
+    for (let i = -1; i < 2; i++) {
+      let ir = r + i;
+
+      if (ir >= 0 && ir < this.currentScheme.rows) {
+        for (let j = -1; j < 2; j++) {
+          let jc = c + j;
+
+          if (jc >= 0 && jc < this.currentScheme.columns) {
+            list.push(this.fieldList[ir][jc]);
+          }
+        }
+      }
+    }
+    return list;
   }
 
   toggle () {
@@ -90,49 +141,9 @@ export class SapperComponent implements OnInit {
       this.setGameOver(true);
     }
 
-    item.open = true;
+    this.open(item);
     if (!item.neighbors) {
       this.openNeighbors(item);
     }
-  }
-
-  setGameOver (error) {
-    this.gameOver = error ? 'error': 'succes';
-  }
-
-  openNeighbors (item) {
-    let listNeighbors = this.neighbors(item);
-
-    for (let i in listNeighbors) {
-      let $this = listNeighbors[i];
-
-      if (!$this.open) {
-        $this.open = true;
-        if (!$this.neighbors) {
-          setTimeout( () => {
-            this.openNeighbors($this);
-          }, 70);
-        }
-      }
-    }
-  }
-
-  neighbors = function (item) {
-    var r = item.row,
-      c = item.col,
-      list = [];
-
-    for (var i = -1; i < 2; i++) {
-      var ir = r + i;
-      if (ir >= 0 && ir < this.currentScheme.rows) {
-        for (var j = -1; j < 2; j++) {
-          var jc = c + j;
-          if (jc >= 0 && jc < this.currentScheme.columns) {
-            list.push(this.fieldList[ir][jc]);
-          }
-        }
-      }
-    }
-    return list;
   }
 }
