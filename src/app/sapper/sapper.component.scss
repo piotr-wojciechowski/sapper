@@ -24,6 +24,7 @@
     top: 100%;
     height: 0;
     overflow: hidden;
+    z-index: 10;
     &.on {
       border: 1px solid #ccc;
       box-shadow: 0 3px 3px #bbb;
@@ -35,6 +36,7 @@
       > span {
         display: block;
         padding: 4px 5px;
+        white-space: nowrap;
         cursor: pointer;
         &:hover {
           background-color: #ddd;
@@ -44,11 +46,12 @@
   }
 }
 .pw-sapper-content {
+  position: relative;
   ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    line-height: 1em;
+    line-height: 8px;
   }
   button {
     padding: 0;
@@ -65,6 +68,65 @@
     }
     &:focus {
       outline: none;
+    }
+    &.open {
+      background-color: #fff;
+      span {
+        position: absolute;
+        display: block;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        line-height: 10px;
+      }
+    }
+  }
+  .glyphicon {
+    &:before {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      line-height: 100%;
+    }
+  }
+  .glyphicon-flag {
+    color: #f00;
+  }
+  .question:before {
+    content: '?';
+    color: #00F;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 8px;
+  }
+  .game-over {
+    position: absolute;
+    display: none;
+    background-color: rgba(255,255,255,0.45);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    span {
+      position: absolute;
+      display: none;
+      top: 50%;
+      margin-top: -15px;
+      width: 100%;
+      font-size: 20px;
+      font-weight: 600;
+      text-shadow: 0 0 6px #fff;
+      text-align: center;
+      &.on {
+        display: block;
+      }
+    }
+    &.on {
+      display: block;
     }
   }
 }
