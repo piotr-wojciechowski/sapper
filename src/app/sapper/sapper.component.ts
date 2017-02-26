@@ -119,6 +119,25 @@ export class SapperComponent implements OnInit {
     this.generateFieldList();
   }
 
+  setClass (item) {
+    let thisClass = 'btn-info ';
+
+    if (item.open || item.flag) {
+      thisClass = 'btn-defoult ';
+    }
+    if (item.flag === 2) {
+      thisClass += 'question ';
+    }
+    if (item.flag === 1) {
+      thisClass += 'glyphicon-flag ';
+    } else {
+      if (item.mine && this.gameOver == 'error') {
+        thisClass += 'glyphicon-asterisk ';
+      }
+    }
+    return thisClass;
+  }
+
   onRightClick (e, item) {
     e.preventDefault();
     if (item.flag) {

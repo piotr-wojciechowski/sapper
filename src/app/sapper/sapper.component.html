@@ -1,5 +1,5 @@
 <div class="pw-sapper">
-  <div class="pw-sapper-header">
+  <div class="pw-sapper-header text-center">
     <h1>Sapper</h1>
     <div class="pw-sapper-settings">
       <span (click)="toggle()" class="scheme-button">
@@ -15,20 +15,21 @@
   <div class="pw-sapper-content">
     <ul>
       <li *ngFor="let row of fieldList">
-        <button [ngClass]="{'glyphicon-asterisk': gameOver == 'error' && item.mine && item.flag != 1, 'glyphicon-flag': item.flag == 1, question: item.flag == 2, open: item.open}"
-                type="button" *ngFor="let item of row" class="glyphicon" (contextmenu)="onRightClick($event, item)"
+        <!--<button [ngClass]="{'glyphicon-asterisk': gameOver == 'error' && item.mine && item.flag != 1, 'glyphicon-flag': item.flag == 1, question: item.flag == 2, open: item.open}" btn-info-->
+        <button [ngClass]="setClass(item)"
+                type="button" *ngFor="let item of row" class="btn glyphicon" (contextmenu)="onRightClick($event, item)"
                 (click)="click($event, item)">
           <span *ngIf="item.open && item.neighbors && !item.mine">{{item.neighbors}}</span>
         </button>
       </li>
     </ul>
     <div class="game-over" [ngClass]="{on: gameOver}">
-      <span [ngClass]="{on: gameOver == 'succes'}">you win!</span>
+      <span class="succes" [ngClass]="{on: gameOver == 'succes'}">you win!</span>
       <span [ngClass]="{on: gameOver == 'error'}">you lost</span>
     </div>
   </div>
   <div class="pw-sapper-footer text-center">
-    to open {{closed}}
+    to open <span class="badge">{{closed}}</span>
     <button type="button" (click)="generateFieldList()" title="Reload"
             class="glyphicon glyphicon-refresh btn btn-default btn-xs"></button>
   </div>
