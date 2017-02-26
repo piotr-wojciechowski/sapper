@@ -24,7 +24,7 @@ export class SapperComponent implements OnInit {
   ngOnInit() {
     let myCookie = Number(Cookie.get('currentScheme'));
 
-    if (typeof myCookie === 'number') {
+    if (myCookie) {
       this.currentScheme = this.scheme[myCookie];
     }
     this.generateFieldList();
