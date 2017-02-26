@@ -6,8 +6,8 @@
         size: {{currentScheme.rows}} x {{currentScheme.columns}}, mines: {{currentScheme.mines}}
       </span>
       <ul class="select" [ngClass]="{on: selectOpen}">
-        <li *ngFor="let item of scheme">
-          <span (click)="setScheme(item)">size: {{item.rows}} x {{item.columns}}, mines: {{item.mines}}</span>
+        <li *ngFor="let item of scheme; let i=index">
+          <span (click)="setScheme(i, item)">size: {{item.rows}} x {{item.columns}}, mines: {{item.mines}}</span>
         </li>
       </ul>
     </div>

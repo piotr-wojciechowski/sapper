@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Cookie} from "ng2-cookies/src/services/cookie";
 
 @Component({
   selector: 'sapper',
@@ -18,10 +19,14 @@ export class SapperComponent implements OnInit {
   closed: number;
 
   constructor() {
-    console.log('sapper', this);
   }
 
   ngOnInit() {
+    let myCookie = Number(Cookie.get('currentScheme'));
+
+    if (typeof myCookie === 'number') {
+      this.currentScheme = this.scheme[myCookie];
+    }
     this.generateFieldList();
   }
 
@@ -113,10 +118,11 @@ export class SapperComponent implements OnInit {
     this.selectOpen = !this.selectOpen;
   }
 
-  setScheme (item) {
+  setScheme (index, item) {
     this.currentScheme = item;
     this.selectOpen = false;
     this.generateFieldList();
+    Cookie.set('currentScheme', index);
   }
 
   setClass (item) {
